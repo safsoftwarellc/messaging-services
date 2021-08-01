@@ -28,11 +28,22 @@ public class SolaceRestController {
 	public ResponseEntity<Object> postMessage(@RequestParam("file") MultipartFile file,
 							@RequestParam("jmsCorrelationID") String jmsCorrelationID,
 							@RequestParam("messageProperties") String messageProperties,
-							@RequestBody SolaceQueueInfo solaceQueueInfo) {
+							
+							@RequestParam("initialContextFactory") String initialContextFactory,
+							@RequestParam("providerUrl") String providerUrl,
+							@RequestParam("securityPrincipal") String securityPrincipal,
+							@RequestParam("securityCredentials") String securityCredentials,
+							@RequestParam("solaceJmsVpn") String solaceJmsVpn,
+							@RequestParam("solaceJmsSslValidateCertificate") String solaceJmsSslValidateCertificate,
+							@RequestParam("solaceJmsRespectTimeToLIve") String solaceJmsRespectTimeToLIve,
+							@RequestParam("connectionFactory") String connectionFactory,
+							@RequestParam("solDestination") String solDestination) {
 		
 		boolean isMessagePosted = false;
 		
 		String fileData = null;
+		SolaceQueueInfo solaceQueueInfo = new SolaceQueueInfo(initialContextFactory, providerUrl, securityPrincipal, securityCredentials, 
+				solaceJmsVpn, solaceJmsSslValidateCertificate, solaceJmsRespectTimeToLIve, connectionFactory, solDestination);
 		try {
 			fileData = new String(file.getBytes());
 			isMessagePosted = solaceService.postMessageToQueue(solaceQueueInfo, fileData, jmsCorrelationID, messageProperties);

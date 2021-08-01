@@ -28,11 +28,17 @@ public class IbmMQRestController {
 	public ResponseEntity<Object> postMessage(@RequestParam("file") MultipartFile file,
 			@RequestParam("queueName") String queueName,
 			@RequestParam("messageProperties") String messageProperties,
-			@RequestBody IbmMqInfo ibmMqInfo){
+			@RequestParam("hostName") String hostName,
+			@RequestParam("portNumber") String portNumber,
+			@RequestParam("queueManager") String queueManager,
+			@RequestParam("channel") String channel,
+			@RequestParam("sslCipherSuite") String sslCipherSuite,
+			@RequestParam("useIBMCipherMappings") String useIBMCipherMappings){
 		
 		boolean isMessagePosted = false;
 		
 		String fileData = null;
+		IbmMqInfo ibmMqInfo = new IbmMqInfo(hostName, portNumber, queueManager, channel, sslCipherSuite, useIBMCipherMappings);
 		try {
 			fileData = new String(file.getBytes());
 			ibmMqService.init(ibmMqInfo);
