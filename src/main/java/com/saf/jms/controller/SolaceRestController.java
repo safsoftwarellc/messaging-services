@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -21,6 +20,26 @@ public class SolaceRestController {
 	
 	@Autowired
 	SolaceService solaceService;
+	
+	
+	@RequestMapping(path = "/rest/solace/postMessageTest", 
+			method = RequestMethod.POST, 
+			consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+	public ResponseEntity<Object> postMessageTest(@RequestParam("file") MultipartFile file,
+							@RequestParam("jmsCorrelationID") String jmsCorrelationID,
+							@RequestParam("messageProperties") String messageProperties,
+							@RequestParam("initialContextFactory") String initialContextFactory,
+							@RequestParam("providerUrl") String providerUrl,
+							@RequestParam("securityPrincipal") String securityPrincipal,
+							@RequestParam("securityCredentials") String securityCredentials,
+							@RequestParam("solaceJmsVpn") String solaceJmsVpn,
+							@RequestParam("solaceJmsSslValidateCertificate") String solaceJmsSslValidateCertificate,
+							@RequestParam("solaceJmsRespectTimeToLIve") String solaceJmsRespectTimeToLIve,
+							@RequestParam("connectionFactory") String connectionFactory,
+							@RequestParam("solDestination") String solDestination) {
+		
+		return new ResponseEntity<Object>("Posted Successfull!", HttpStatus.OK);
+	}
 
 	@RequestMapping(path = "/rest/solace/postMessage", 
 			method = RequestMethod.POST, 
@@ -28,7 +47,6 @@ public class SolaceRestController {
 	public ResponseEntity<Object> postMessage(@RequestParam("file") MultipartFile file,
 							@RequestParam("jmsCorrelationID") String jmsCorrelationID,
 							@RequestParam("messageProperties") String messageProperties,
-							
 							@RequestParam("initialContextFactory") String initialContextFactory,
 							@RequestParam("providerUrl") String providerUrl,
 							@RequestParam("securityPrincipal") String securityPrincipal,
