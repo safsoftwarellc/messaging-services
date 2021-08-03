@@ -27,18 +27,18 @@ public class IbmMQRestController extends ControllerBase {
 			method = RequestMethod.POST, 
 			consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
 	public ResponseEntity<Object> postMessageTest(@RequestParam("messageFile") MultipartFile messageFile,
-								@RequestParam(name="keyStoreFile", required = false) MultipartFile keyStoreFile,
-								@RequestParam(name="keyStorePwd", required = false) String keyStorePwd,
-								@RequestParam(name="trustStoreFile", required = false) MultipartFile trustStoreFile,
-								@RequestParam(name="trustStorePwd", required = false) String trustStorePwd,
-								@RequestParam("queueName") String queueName,
-								@RequestParam("messageProperties") String messageProperties,
-								@RequestParam("hostName") String hostName,
-								@RequestParam("portNumber") String portNumber,
-								@RequestParam("queueManager") String queueManager,
-								@RequestParam("channel") String channel,
-								@RequestParam("sslCipherSuite") String sslCipherSuite,
-								@RequestParam("useIBMCipherMappings") String useIBMCipherMappings){
+			@RequestParam(name="keyStoreFile", required = false) MultipartFile keyStoreFile,
+			@RequestParam(name="keyStorePwd", required = false) String keyStorePwd,
+			@RequestParam(name="trustStoreFile", required = false) MultipartFile trustStoreFile,
+			@RequestParam(name="trustStorePwd", required = false) String trustStorePwd,
+			@RequestParam("queueName") String queueName,
+			@RequestParam("messageProperties") String messageProperties,
+			@RequestParam("hostName") String hostName,
+			@RequestParam("portNumber") String portNumber,
+			@RequestParam("queueManager") String queueManager,
+			@RequestParam("channel") String channel,
+			@RequestParam("sslCipherSuite") String sslCipherSuite,
+			@RequestParam("useIBMCipherMappings") String useIBMCipherMappings){
 		
 		return new ResponseEntity<Object>("Posted Successfull!", HttpStatus.OK);
 	}
