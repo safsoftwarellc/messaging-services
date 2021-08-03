@@ -36,16 +36,10 @@ public class IbmMqService {
 		
 	}
 	
-	public void init(IbmMqInfo ibmMqInfo) {
+	public void init(IbmMqInfo ibmMqInfo, String ksFilePath, String ksPwd, String tsFilePath, String tsPwd) {
 		this.ibmMqInfo = ibmMqInfo;
-		
-		String ksFilePath = null;
-		String ksPwd = null;
 
-		String tsFilePath = null;
-		String tsPwd = null;
-
-		if(ksFilePath!=null) {
+		if(ksFilePath!=null && new File(ksFilePath).exists()) {
 			addSystemProperties(ksFilePath, ksPwd, tsFilePath, tsPwd);
 			KeyStore keyStore = getKeystore(ksFilePath, ksPwd);
 			socketFactory = getSSLSocketFactory(keyStore, ksPwd);
@@ -124,10 +118,14 @@ public class IbmMqService {
 	
 	
 	private void addSystemProperties(String ksFilePath, String ksPwd, String tsFilePath, String tsPwd) {
-		System.setProperty("javax.net.ssl.keyStore", ksFilePath);
-		System.setProperty("javax.net.ssl.keyStorePassword", ksPwd);
-		System.setProperty("javax.net.ssl.trustStore", tsFilePath);
-		System.setProperty("javax.net.ssl.trustStorePassword", tsPwd);
+		if(ksFilePath!=null && new File(ksFilePath).exists()) {
+			System.setProperty("javax.net.ssl.keyStore", ksFilePath);
+			System.setProperty("javax.net.ssl.keyStorePassword", ksPwd);
+		}
+		if(tsFilePath!=null && new File(tsFilePath).exists()) {
+			System.setProperty("javax.net.ssl.trustStore", tsFilePath);
+			System.setProperty("javax.net.ssl.trustStorePassword", tsPwd);
+		}
 		System.setProperty("com.ibm.mq.cfg.useIBMCipherMappings", ibmMqInfo.getUseIBMCipherMappings());
 		
 	}

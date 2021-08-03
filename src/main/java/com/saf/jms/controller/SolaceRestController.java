@@ -25,7 +25,7 @@ public class SolaceRestController {
 	@RequestMapping(path = "/rest/solace/postMessageTest", 
 			method = RequestMethod.POST, 
 			consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-	public ResponseEntity<Object> postMessageTest(@RequestParam("file") MultipartFile file,
+	public ResponseEntity<Object> postMessageTest(@RequestParam("messageFile") MultipartFile messageFile,
 							@RequestParam("jmsCorrelationID") String jmsCorrelationID,
 							@RequestParam("messageProperties") String messageProperties,
 							@RequestParam("initialContextFactory") String initialContextFactory,
@@ -44,7 +44,7 @@ public class SolaceRestController {
 	@RequestMapping(path = "/rest/solace/postMessage", 
 			method = RequestMethod.POST, 
 			consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-	public ResponseEntity<Object> postMessage(@RequestParam("file") MultipartFile file,
+	public ResponseEntity<Object> postMessage(@RequestParam("messageFile") MultipartFile messageFile,
 							@RequestParam("jmsCorrelationID") String jmsCorrelationID,
 							@RequestParam("messageProperties") String messageProperties,
 							@RequestParam("initialContextFactory") String initialContextFactory,
@@ -63,7 +63,7 @@ public class SolaceRestController {
 		SolaceQueueInfo solaceQueueInfo = new SolaceQueueInfo(initialContextFactory, providerUrl, securityPrincipal, securityCredentials, 
 				solaceJmsVpn, solaceJmsSslValidateCertificate, solaceJmsRespectTimeToLIve, connectionFactory, solDestination);
 		try {
-			fileData = new String(file.getBytes());
+			fileData = new String(messageFile.getBytes());
 			isMessagePosted = solaceService.postMessageToQueue(solaceQueueInfo, fileData, jmsCorrelationID, messageProperties);
 		} catch (IOException e) {
 			e.printStackTrace();
