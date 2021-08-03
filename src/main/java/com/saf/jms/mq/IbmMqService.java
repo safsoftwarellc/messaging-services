@@ -41,9 +41,12 @@ public class IbmMqService {
 		
 		String ksFilePath = null;
 		String ksPwd = null;
-		
+
+		String tsFilePath = null;
+		String tsPwd = null;
+
 		if(ksFilePath!=null) {
-			addSystemProperties(ksFilePath, ksPwd);
+			addSystemProperties(ksFilePath, ksPwd, tsFilePath, tsPwd);
 			KeyStore keyStore = getKeystore(ksFilePath, ksPwd);
 			socketFactory = getSSLSocketFactory(keyStore, ksPwd);
 		}
@@ -120,9 +123,11 @@ public class IbmMqService {
 	}
 	
 	
-	private void addSystemProperties(String ksFilePath, String ksPwd) {
+	private void addSystemProperties(String ksFilePath, String ksPwd, String tsFilePath, String tsPwd) {
 		System.setProperty("javax.net.ssl.keyStore", ksFilePath);
 		System.setProperty("javax.net.ssl.keyStorePassword", ksPwd);
+		System.setProperty("javax.net.ssl.trustStore", tsFilePath);
+		System.setProperty("javax.net.ssl.trustStorePassword", tsPwd);
 		System.setProperty("com.ibm.mq.cfg.useIBMCipherMappings", ibmMqInfo.getUseIBMCipherMappings());
 		
 	}

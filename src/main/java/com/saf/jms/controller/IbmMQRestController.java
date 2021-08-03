@@ -57,7 +57,7 @@ public class IbmMQRestController {
 		try {
 			fileData = new String(file.getBytes());
 			ibmMqService.init(ibmMqInfo);
-			ibmMqService.sendTextMessage(queueName, fileData, messageProperties);
+			isMessagePosted = ibmMqService.sendTextMessage(queueName, fileData, messageProperties);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
