@@ -23,6 +23,27 @@ public class IbmMQRestController extends ControllerBase {
 	@Autowired
 	IbmMqService ibmMqService;
 	
+	
+	@RequestMapping(path = "/rest/mq/postMessageTestMessage", 
+			method = RequestMethod.POST, 
+			consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+	public ResponseEntity<Object> postMessageTestMessage(@RequestParam("messageText") String messageText,
+			@RequestParam(name="keyStoreFile", required = false) MultipartFile keyStoreFile,
+			@RequestParam(name="keyStorePwd", required = false) String keyStorePwd,
+			@RequestParam(name="trustStoreFile", required = false) MultipartFile trustStoreFile,
+			@RequestParam(name="trustStorePwd", required = false) String trustStorePwd,
+			@RequestParam("queueName") String queueName,
+			@RequestParam("messageProperties") String messageProperties,
+			@RequestParam("hostName") String hostName,
+			@RequestParam("portNumber") String portNumber,
+			@RequestParam("queueManager") String queueManager,
+			@RequestParam("channel") String channel,
+			@RequestParam("sslCipherSuite") String sslCipherSuite,
+			@RequestParam("useIBMCipherMappings") String useIBMCipherMappings){
+		
+		return new ResponseEntity<Object>("Posted Successfull!", HttpStatus.OK);
+	}
+	
 	@RequestMapping(path = "/rest/mq/postMessageTest", 
 			method = RequestMethod.POST, 
 			consumes = MediaType.MULTIPART_FORM_DATA_VALUE)

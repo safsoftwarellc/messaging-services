@@ -21,6 +21,24 @@ public class SolaceRestController {
 	@Autowired
 	SolaceService solaceService;
 	
+	@RequestMapping(path = "/rest/solace/postMessageTestMessage", 
+			method = RequestMethod.POST, 
+			consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+	public ResponseEntity<Object> postMessageTestMessage(@RequestParam("messageText") MultipartFile messageText,
+							@RequestParam("jmsCorrelationID") String jmsCorrelationID,
+							@RequestParam("messageProperties") String messageProperties,
+							@RequestParam("initialContextFactory") String initialContextFactory,
+							@RequestParam("providerUrl") String providerUrl,
+							@RequestParam("securityPrincipal") String securityPrincipal,
+							@RequestParam("securityCredentials") String securityCredentials,
+							@RequestParam("solaceJmsVpn") String solaceJmsVpn,
+							@RequestParam("solaceJmsSslValidateCertificate") String solaceJmsSslValidateCertificate,
+							@RequestParam("solaceJmsRespectTimeToLIve") String solaceJmsRespectTimeToLIve,
+							@RequestParam("connectionFactory") String connectionFactory,
+							@RequestParam("solDestination") String solDestination) {
+		
+		return new ResponseEntity<Object>("Posted Successfull!", HttpStatus.OK);
+	}
 	
 	@RequestMapping(path = "/rest/solace/postMessageTest", 
 			method = RequestMethod.POST, 
