@@ -24,10 +24,10 @@ public class IbmMQRestController extends ControllerBase {
 	IbmMqService ibmMqService;
 	
 	
-	@RequestMapping(path = "/rest/mq/postMessageTestMessage", 
+	@RequestMapping(path = "/rest/mq/postTextMessageTest", 
 			method = RequestMethod.POST, 
 			consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-	public ResponseEntity<Object> postMessageTestMessage(@RequestParam("messageText") String messageText,
+	public ResponseEntity<Object> postTextMessageTest(@RequestParam("messageText") String messageText,
 			@RequestParam(name="keyStoreFile", required = false) MultipartFile keyStoreFile,
 			@RequestParam(name="keyStorePwd", required = false) String keyStorePwd,
 			@RequestParam(name="trustStoreFile", required = false) MultipartFile trustStoreFile,
@@ -41,6 +41,7 @@ public class IbmMQRestController extends ControllerBase {
 			@RequestParam("sslCipherSuite") String sslCipherSuite,
 			@RequestParam("useIBMCipherMappings") String useIBMCipherMappings){
 		
+		System.out.println(messageText);
 		return new ResponseEntity<Object>("Posted Successfull!", HttpStatus.OK);
 	}
 	
@@ -63,6 +64,76 @@ public class IbmMQRestController extends ControllerBase {
 		
 		return new ResponseEntity<Object>("Posted Successfull!", HttpStatus.OK);
 	}
+	
+	@RequestMapping(path = "/rest/mq/postTextMessage", 
+			method = RequestMethod.POST, 
+			consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+	public ResponseEntity<Object> postTextMessage(@RequestParam("messageText") String messageText,
+											@RequestParam(name="keyStoreFile", required = false) MultipartFile keyStoreFile,
+											@RequestParam(name="keyStorePwd", required = false) String keyStorePwd,
+											@RequestParam(name="trustStoreFile", required = false) MultipartFile trustStoreFile,
+											@RequestParam(name="trustStorePwd", required = false) String trustStorePwd,
+											@RequestParam("queueName") String queueName,
+											@RequestParam("messageProperties") String messageProperties,
+											@RequestParam("hostName") String hostName,
+											@RequestParam("portNumber") String portNumber,
+											@RequestParam("queueManager") String queueManager,
+											@RequestParam("channel") String channel,
+											@RequestParam("sslCipherSuite") String sslCipherSuite,
+											@RequestParam("useIBMCipherMappings") String useIBMCipherMappings){
+		
+		boolean isMessagePosted = false;
+		String ksFilePath = null;
+		String tsFilePath =  null;
+		if(keyStoreFile!=null) {
+			ksFilePath = System.getProperty("java.io.tmpdir")+getRandomNumber()+"_"+keyStoreFile.getOriginalFilename();
+			System.out.println("KeyStore File is - "+ksFilePath);
+			try {
+				
+				FileUtils.writeByteArrayToFile(new File(ksFilePath), keyStoreFile.getBytes());
+			} catch (IOException e1) {
+				e1.printStackTrace();
+			}
+		}
+		if(trustStoreFile!=null) {
+			tsFilePath = System.getProperty("java.io.tmpdir")+getRandomNumber()+"_"+trustStoreFile.getOriginalFilename();
+			System.out.println("TrustStore File is - "+tsFilePath);
+			try {
+				FileUtils.writeByteArrayToFile(new File(tsFilePath), trustStoreFile.getBytes());
+			} catch (IOException e1) {
+				e1.printStackTrace();
+			}
+		}
+
+		IbmMqInfo ibmMqInfo = new IbmMqInfo(hostName, portNumber, queueManager, channel, sslCipherSuite, useIBMCipherMappings);
+		ibmMqService.init(ibmMqInfo, ksFilePath, keyStorePwd, tsFilePath, trustStorePwd);
+		isMessagePosted = ibmMqService.sendTextMessage(queueName, messageText, messageProperties);
+		
+		if(ksFilePath!=null) {
+			try {
+				FileUtils.delete(new File(ksFilePath));
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+		if(tsFilePath!=null) {
+			try {
+				FileUtils.delete(new File(tsFilePath));
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+		
+		ResponseEntity<Object> response = null;
+		if(isMessagePosted) {
+			response = new ResponseEntity<Object>("Posted Successfull!", HttpStatus.OK);
+		}else {
+			response = new ResponseEntity<Object>("Message NOT Posted!", HttpStatus.EXPECTATION_FAILED);
+		}
+		
+		return response;
+	}
+	
 	
 	@RequestMapping(path = "/rest/mq/postMessage", 
 			method = RequestMethod.POST, 
